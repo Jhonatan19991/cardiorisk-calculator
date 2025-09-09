@@ -11,10 +11,65 @@
 </head>
 <body>
   <header>
-    <h1>Calculadora de Riesgo&nbsp;Cardiovascular</h1>
+    <h1>Calculadora de Riesgo Cardiovascular</h1>
   </header>
 
   <main>
+    <!-- Sección de selección de perfiles -->
+    <section class="profiles-section">
+      <h2>Seleccionar Perfil de Paciente</h2>
+      <div class="profile-selector">
+        <label for="profile-select">Perfil:</label>
+        <select id="profile-select" name="profile">
+          <option value="">Seleccionar perfil...</option>
+        </select>
+        <button type="button" id="load-profile-btn" disabled>Cargar Perfil</button>
+        <button type="button" id="create-profile-btn">Crear Nuevo Perfil</button>
+        <button type="button" id="view-history-btn" disabled>Ver Historial</button>
+      </div>
+      
+      <!-- Modal para crear nuevo perfil -->
+      <div id="create-profile-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h3>Crear Nuevo Perfil</h3>
+          <p class="modal-description">Se creará un perfil con los datos actuales del formulario</p>
+          <form id="create-profile-form">
+            <div class="form-group">
+              <label for="profile-name">Nombre del Perfil:</label>
+              <input type="text" id="profile-name" name="profile_name" required>
+            </div>
+            <div class="form-group">
+              <label for="profile-description">Descripción:</label>
+              <textarea id="profile-description" name="profile_description" rows="3" placeholder="Descripción del perfil del paciente..."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="patient-name">Nombre del Paciente:</label>
+              <input type="text" id="patient-name" name="patient_name" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit">Crear Perfil con Datos Actuales</button>
+              <button type="button" id="cancel-create">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Modal para ver historial de mediciones -->
+      <div id="history-modal" class="modal hidden">
+        <div class="modal-content large">
+          <span class="close">&times;</span>
+          <h3>Historial de Mediciones</h3>
+          <div id="history-content">
+            <p>Cargando historial...</p>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="close-history">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <form id="risk-form">
       <section class="grid">
         <h2>Datos personales</h2>
@@ -23,15 +78,16 @@
         </label>
         <label>Sexo
           <select name="sexo" required>
+            <option value="">Seleccionar sexo</option>
             <option value="hombre">Hombre</option>
             <option value="mujer">Mujer</option>
           </select>
         </label>
         <label>Peso (kg)
-          <input type="number" name="peso" step="0.1">
+          <input type="number" name="peso" step="0.1" min="30" max="200">
         </label>
         <label>Altura (cm)
-          <input type="number" name="altura" step="0.1">
+          <input type="number" name="altura" step="0.1" min="100" max="250">
         </label>
       </section>
 
@@ -50,13 +106,13 @@
           <input type="number" name="hdl" required min="20" max="100">
         </label>
         <label>LDL (mg/dL)
-          <input type="number" name="ldl">
+          <input type="number" name="ldl" min="50" max="200">
         </label>
         <label>Presión sistólica (mmHg)
           <input type="number" name="presion_sistolica" required min="90" max="200">
         </label>
         <label>Presión diastólica (mmHg)
-          <input type="number" name="presion_diastolica">
+          <input type="number" name="presion_diastolica" min="60" max="120">
         </label>
       </section>
 
