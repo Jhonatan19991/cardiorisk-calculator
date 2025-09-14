@@ -25,6 +25,15 @@ Una aplicación web completa para calcular el riesgo cardiovascular utilizando m
    cd backend
    ```
 
+2. Crea el archivo `.env` copiando el ejemplo (cambia el DATABASE_URL):
+   ```bash
+   copy env.example .env
+   ```
+   > En macOS/Linux usa:
+   > ```bash
+   > cp env.example .env
+   > ```
+
 2. Crea un entorno virtual:
    ```bash
    python -m venv venv
