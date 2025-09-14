@@ -1,8 +1,8 @@
 Flask==2.3.2
 Flask-CORS==4.0.0
-numpy==1.24.3
+numpy>=1.26
 reportlab==4.0.4
 Pillow==11.3.0
-SQLAlchemy==2.0.23
-psycopg2-binary==2.9.9
+SQLAlchemy>=2.0.32
+psycopg2-binary>=2.9.10
 python-dotenv==1.0.0
