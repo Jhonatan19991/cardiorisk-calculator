@@ -15,6 +15,43 @@
   </header>
 
   <main>
+    <!-- Sección informativa sobre los scores -->
+    <section class="scores-info">
+      <h2>Escalas de Riesgo Cardiovascular</h2>
+      <div class="scores-grid">
+        <div class="score-card">
+          <h3>Framingham Risk Score</h3>
+          <p class="score-description"> Basado en el <em>Framingham Heart Study</em>. 
+          <br>Predice el <strong>riesgo de enfermedad coronaria a 10 años</strong>, es decir, la probabilidad de sufrir un infarto de miocardio o una muerte coronaria.</p>
+          <div class="score-range">
+            <strong>Rango de edad:</strong> 30-74 años
+          </div>
+        </div>
+        
+        <div class="score-card">
+          <h3>SCORE 2019</h3>
+          <p class="score-description">Diseñado por la <em>Sociedad Europea de Cardiología (ESC)</em>.  
+          <br>Estima el <strong>riesgo de muerte cardiovascular a 10 años</strong> (debida a infarto, ictus u otra causa cardiovascular).</p>
+          <div class="score-range">
+            <strong>Rango de edad:</strong> 40-65 años
+          </div>
+        </div>
+        
+        <div class="score-card">
+          <h3>ACC/AHA 2013</h3>
+          <p class="score-description">Ecuaciones de cohorte agrupadas (<em>Pooled Cohort Equations</em>) recomendadas en EE.UU. 
+          <br>Predicen el <strong>riesgo de evento aterosclerótico cardiovascular a 10 años</strong>, incluyendo infarto de miocardio, muerte coronaria y accidente cerebrovascular (fatal o no fatal).</p>
+          <div class="score-range">
+            <strong>Rango de edad:</strong> 40-79 años
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-note">
+        <p><strong>Nota:</strong> Solo se calcularán los scores aplicables según la edad del paciente. Si ningún score es aplicable, se mostrará un mensaje informativo.</p>
+      </div>
+    </section>
+
     <!-- Sección de selección de perfiles -->
     <section class="profiles-section">
       <h2>Seleccionar Perfil de Paciente</h2>
@@ -73,8 +110,8 @@
     <form id="risk-form">
       <section class="grid">
         <h2>Datos personales</h2>
-        <label>Edad (20-79)
-          <input type="number" name="edad" required min="20" max="79">
+        <label>Edad (30-79)
+          <input type="number" name="edad" required min="30" max="79">
         </label>
         <label>Sexo
           <select name="sexo" required>

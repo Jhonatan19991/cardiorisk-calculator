@@ -1,11 +1,11 @@
 # Calculadora de Riesgo Cardiovascular
 
-Una aplicación web completa para calcular el riesgo cardiovascular utilizando múltiples escalas científicas: Framingham, SCORE2 y ACC/AHA.
+Una aplicación web completa para calcular el riesgo cardiovascular utilizando múltiples escalas científicas: Framingham, SCORE 2019 y ACC/AHA.
 
 ## Características
 
 - **Cálculos científicos precisos** basados en la literatura médica actual
-- **Múltiples escalas de riesgo**: Framingham 2008, SCORE2 2021, ACC/AHA 2013
+- **Múltiples escalas de riesgo**: Framingham 2008, SCORE 2019, ACC/AHA 2013
 - **Perfiles de pacientes predefinidos** para facilitar las pruebas
 - **Validación robusta** de datos clínicos
 - **Generación de reportes PDF** profesionales
@@ -96,17 +96,19 @@ Haz clic en cualquier perfil para cargar automáticamente los datos en el formul
 ### Framingham 2008
 - Basada en el estudio Framingham Heart Study
 - Considera edad, sexo, colesterol total, HDL, presión sistólica, diabetes y tabaquismo
-- Aplicable a pacientes de 20-79 años
+- Aplicable a pacientes de 30 a 74 años
 
-### SCORE2 2021
+### SCORE 2019
 - Sistema de puntuación europeo actualizado
 - Adaptado para regiones de alto riesgo cardiovascular
 - Incluye factores de riesgo tradicionales más precisos
+- Aplicable a pacientes de 40 a 65 años
 
 ### ACC/AHA 2013
 - Guías americanas de cardiología
 - Ecuaciones de cohorte agrupadas
 - Considera tratamiento antihipertensivo y estatinas
+- Aplicable a pacientes de 40 a 79 años
 
 ## Estructura del Proyecto
 

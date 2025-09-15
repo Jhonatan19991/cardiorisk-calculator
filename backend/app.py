@@ -16,6 +16,7 @@ from calculators import (
     acc_aha_risk,
     get_default_profile,
     get_all_profiles,
+    get_available_calculators,
 )
 from validators import validate_patient_data
 from report_generator import build_pdf_report
@@ -320,14 +321,37 @@ def calculate(method):
     if not ok:
         return jsonify({"status": "error", "errors": warnings_or_errors}), 400
 
+    # Verificar qué calculadoras están disponibles según la edad
+    age = patient.get("edad", 0)
+    available_calculators = get_available_calculators(age)
+    
+    # Si se solicita "all", verificar que al menos una calculadora esté disponible
+    if method == "all":
+        if not any(available_calculators.values()):
+            return jsonify({
+                "status": "error", 
+                "errors": [f"No se puede calcular ningún score para pacientes de {age} años. Rangos válidos: Framingham (30-74), SCORE (40-65), ACC/AHA (40-79)"]
+            }), 422
+
     result = {}
+    errors = []
+    
     try:
-        if method in ("framingham", "all"):
+        if method in ("framingham", "all") and available_calculators["framingham"]:
             result["framingham"] = framingham_risk(patient)
-        if method in ("score", "all"):
+        elif method in ("framingham", "all") and not available_calculators["framingham"]:
+            errors.append(f"Framingham no aplicable para edad {age} años (rango válido: 30-74 años)")
+            
+        if method in ("score", "all") and available_calculators["score"]:
             result["score"] = score_risk(patient)
-        if method in ("acc-aha", "all"):
+        elif method in ("score", "all") and not available_calculators["score"]:
+            errors.append(f"SCORE no aplicable para edad {age} años (rango válido: 40-65 años)")
+            
+        if method in ("acc-aha", "all") and available_calculators["acc_aha"]:
             result["acc_aha"] = acc_aha_risk(patient)
+        elif method in ("acc-aha", "all") and not available_calculators["acc_aha"]:
+            errors.append(f"ACC/AHA no aplicable para edad {age} años (rango válido: 40-79 años)")
+            
     except Exception as err:
         # Capturar cualquier error durante el cálculo
         return jsonify({"status": "error", "errors": [f"Error en cálculo: {str(err)}"]}), 422
@@ -336,6 +360,10 @@ def calculate(method):
     for method_name, method_result in result.items():
         if "error" in method_result:
             return jsonify({"status": "error", "errors": [f"Error en {method_name}: {method_result['error']}"]}), 422
+
+    # Si hay errores de calculadoras no disponibles, agregarlos a los warnings
+    if errors:
+        warnings_or_errors.extend(errors)
 
     # Almacenar sesión temporal
     session_id = str(uuid4())

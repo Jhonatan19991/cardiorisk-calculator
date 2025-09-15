@@ -445,8 +445,8 @@ function validateForm() {
   const hdl = parseFloat(form.elements["hdl"].value);
   const presion = parseFloat(form.elements["presion_sistolica"].value);
   
-  if (edad < 20 || edad > 79) {
-    errors.push("Edad debe estar entre 20 y 79 años");
+  if (edad < 30 || edad > 79) {
+    errors.push("Edad debe estar entre 30 y 79 años para al menos una calculadora");
   }
   if (col < 100 || col > 400) {
     errors.push("Colesterol total debe estar entre 100 y 400 mg/dL");
@@ -469,17 +469,31 @@ function validateForm() {
 function displayResults(result) {
   resultsSection.classList.remove("hidden");
 
+  // Obtener solo los resultados disponibles
+  const availableResults = [];
+  if (result.framingham) availableResults.push(result.framingham.percent);
+  if (result.score) availableResults.push(result.score.percent);
+  if (result.acc_aha) availableResults.push(result.acc_aha.percent);
+
   // Interpretación textual
-  const overall = Math.max(
-    result.framingham.percent,
-    result.score.percent,
-    result.acc_aha.percent
-  );
+  const overall = availableResults.length > 0 ? Math.max(...availableResults) : 0;
   
   let riskCategory = "bajo";
   if (overall >= 20) riskCategory = "muy alto";
   else if (overall >= 10) riskCategory = "alto";
   else if (overall >= 5) riskCategory = "moderado";
+
+  // Construir el desglose solo con métodos disponibles
+  let breakdownHtml = "";
+  if (result.framingham) {
+    breakdownHtml += `<li><strong>Framingham:</strong> ${result.framingham.percent}% (${result.framingham.category})</li>`;
+  }
+  if (result.score) {
+    breakdownHtml += `<li><strong>SCORE 2019:</strong> ${result.score.percent}% (${result.score.category})</li>`;
+  }
+  if (result.acc_aha) {
+    breakdownHtml += `<li><strong>ACC/AHA:</strong> ${result.acc_aha.percent}% (${result.acc_aha.category})</li>`;
+  }
 
   interpretationDiv.innerHTML = `
     <div class="risk-summary">
@@ -489,9 +503,7 @@ function displayResults(result) {
       <div class="risk-breakdown">
         <h4>Desglose por método:</h4>
         <ul>
-          <li><strong>Framingham:</strong> ${result.framingham.percent}% (${result.framingham.category})</li>
-          <li><strong>SCORE2:</strong> ${result.score.percent}% (${result.score.category})</li>
-          <li><strong>ACC/AHA:</strong> ${result.acc_aha.percent}% (${result.acc_aha.category})</li>
+          ${breakdownHtml}
         </ul>
       </div>
     </div>
