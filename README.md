@@ -138,6 +138,11 @@ cardiorisk_vFAIL/
 - `GET /generate-report/<session_id>` - Genera reporte PDF
 - `GET /health` - Verificación de salud del servidor
 
+## Base de datos
+
+### Diagrama de relaciones
+![Diagrama de bloques](C:\Users\sebpa\Documents\IA\git_cardiorisk\cardiorisk-calculator\diag_base.png)
+
 ## Validaciones
 
 La aplicación incluye validaciones robustas para:
