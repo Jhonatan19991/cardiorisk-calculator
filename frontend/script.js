@@ -354,6 +354,8 @@ form.addEventListener("submit", async (e) => {
   btnPdf.disabled = true;
   interpretationDiv.textContent = "";
   chartsDiv.innerHTML = "";
+  // Eliminar advertencias previas para evitar duplicados
+  resultsSection.querySelectorAll(".warnings").forEach(el => el.remove());
   resultsSection.classList.add("hidden");
 
   const data = Object.fromEntries(new FormData(form).entries());
