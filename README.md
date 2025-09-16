@@ -1,6 +1,21 @@
 # Calculadora de Riesgo Cardiovascular
 
-Una aplicación web completa para calcular el riesgo cardiovascular utilizando múltiples escalas científicas: Framingham, SCORE 2019 y ACC/AHA.
+Este repositorio contiene el desarrollo de una aplicación web integral para la estimación del riesgo cardiovascular, diseñada con fines académicos y clínicos. La herramienta permite calcular dicho riesgo mediante la implementación de escalas reconocidas internacionalmente, como Framingham, SCORE 2019 y ACC/AHA, integrando criterios médicos y parámetros fisiológicos del paciente.
+
+
+## 📑 Tabla de Contenidos  
+
+1. [Características](#características)
+2. [Instalación y Configuración](#instalación-y-configuración)
+3. [Uso](#uso)
+4. [Escalas de Riesgo](#escalas-de-riesgo)
+5. [Estructura del Proyecto](#estructura-del-proyecto)
+6. [API Endpoints](#api-endpoints)
+7. [Base de Datos](#base-de-datos)
+8. [Credenciales de Conexión](#credenciales-de-conexión)
+9. [Notas Médicas](#notas-médicas)
+10. [Solución de Problemas](#solución-de-problemas)
+
 
 ## Características
 
@@ -140,8 +155,96 @@ cardiorisk_vFAIL/
 
 ## Base de datos
 
-### Diagrama de relaciones
-![Diagrama de bloques](C:\Users\sebpa\Documents\IA\git_cardiorisk\cardiorisk-calculator\diag_base.png)
+## Diagrama de relaciones
+![Diagrama de bloques](https://github.com/Jhonatan19991/cardiorisk-calculator/blob/dev/diag_base.png)
+
+### Descripción de la base de datos
+
+### 1. **profiles** 
+Contiene información de los perfiles que clasifican a los pacientes (ejemplo: perfil poblacional, grupo de riesgo, cohortes específicas).  
+
+| Campo        | Tipo        | Descripción |
+|--------------|------------|-------------|
+| `id`         | SERIAL (PK) | Identificador único del perfil. |
+| `name`       | VARCHAR(100) | Nombre del perfil. |
+| `description`| TEXT        | Descripción detallada del perfil. |
+| `is_active`  | BOOLEAN     | Indica si el perfil está activo. |
+| `created_at` | TIMESTAMP   | Fecha de creación. |
+| `updated_at` | TIMESTAMP   | Última fecha de actualización. |
+
+---
+### 2. **patients**  
+Registra la información básica de cada paciente.  
+
+| Campo        | Tipo        | Descripción |
+|--------------|------------|-------------|
+| `id`         | SERIAL (PK) | Identificador único del paciente. |
+| `profile_id` | INT (FK)    | Relación con `profiles.id`. |
+| `name`       | VARCHAR(150) | Nombre completo del paciente. |
+| `age`        | INT         | Edad del paciente. |
+| `sex`        | VARCHAR(10) | Sexo del paciente (`hombre`, `mujer`). |
+| `weight`     | DECIMAL(5,2) | Peso en kilogramos. |
+| `height`     | DECIMAL(5,2) | Estatura en centímetros. |
+| `created_at` | TIMESTAMP   | Fecha de registro. |
+| `updated_at` | TIMESTAMP   | Última actualización. |
+
+---
+
+### 3.  **clinical_measurements**  
+Guarda los valores clínicos periódicos de los pacientes. Estos datos son esenciales para calcular el riesgo cardiovascular.  
+
+| Campo              | Tipo        | Descripción |
+|--------------------|-------------|-------------|
+| `id`               | SERIAL (PK) | Identificador único de la medición. |
+| `patient_id`       | INT (FK)    | Relación con `patients.id`. |
+| `measurement_date` | TIMESTAMP   | Fecha y hora de la medición. |
+| `total_cholesterol`| DECIMAL(6,2) | Colesterol total (mg/dL). |
+| `hdl`              | DECIMAL(6,2) | Colesterol HDL (mg/dL). |
+| `ldl`              | DECIMAL(6,2) | Colesterol LDL (mg/dL). |
+| `systolic_pressure`| INT         | Presión arterial sistólica (mmHg). |
+| `diastolic_pressure`| INT        | Presión arterial diastólica (mmHg). |
+| `created_at`       | TIMESTAMP   | Fecha de registro. |
+
+---
+
+### 4. **risk_factors_history**  
+Registra los factores de riesgo clínicos y hábitos que pueden influir en el cálculo de riesgo cardiovascular.  
+
+| Campo                  | Tipo        | Descripción |
+|------------------------|-------------|-------------|
+| `id`                   | SERIAL (PK) | Identificador único del historial. |
+| `patient_id`           | INT (FK)    | Relación con `patients.id`. |
+| `date_recorded`        | TIMESTAMP   | Fecha del registro del historial. |
+| `smoking`              | BOOLEAN     | Indica si el paciente fuma. |
+| `diabetes`             | BOOLEAN     | Indica diagnóstico de diabetes. |
+| `hypertension_treatment` | BOOLEAN  | Indica tratamiento para hipertensión. |
+| `statins`              | BOOLEAN     | Uso de estatinas. |
+| `created_at`           | TIMESTAMP   | Fecha de registro. |
+
+---
+
+
+### Justificación del Diseño
+- La base de datos se encuentra normalizada para evitar la redundacia de datos. Se almacena las entidades  `patients`, `profiles`, en tablas distintas a las de las mediciones concurrentes `clinical_measurements`,  `risk_factors_history` para mayor eficiencia y facilidad en su mantenimiento. 
+
+- Se usa claves primarias y foráneas para establecer relaciones claras y garantizar la integridad referencial. 
+
+- Se añaden los campos  `created_at` y  `updated_at`, para el seguimiento de hora de creación y hora de actualización de los datos, útil para realizar depuraciones o análisis históricos. 
+
+### Credenciales de conexión
+
+- Crea un archivo `.env`  dentro de la carpeta `backend/` con el siguiente contenido:
+
+
+```env
+DATABASE_URL="postgresql://mi_usuario:mi_contraseña@localhost:5432/mi_base_de_datos"
+DEBUG=True
+HOST=0.0.0.0
+PORT=5000
+EXPIRE_MINUTES=60
+```
+
+---
 
 ## Validaciones
 
